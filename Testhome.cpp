@@ -2,9 +2,10 @@
 #include <osg/PositionAttitudeTransform>
 #include <osgViewer/Viewer>
 #include <osg/MatrixTransform>
-#include <osgDB/ReadFile> 
+#include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
 #include <osgGA/NodeTrackerManipulator>
+#include <osg/Texture2D>
 
 
 #include "KeyboardHandler.h"
@@ -272,6 +273,12 @@ void test_home(){
     pyramidGeode->addDrawable(pyramidGeometry);
 
 
+    /*transform = new osg::PositionAttitudeTransform;
+    unitSphere = new osg::Sphere( osg::Vec3(0,0,0.0), 2.0);
+    unitSphereDrawable = new osg::ShapeDrawable(unitSphere);
+    basicShapesGeode = new osg::Geode();
+    basicShapesGeode->addDrawable(unitSphereDrawable);*/
+
     create_pyramid_geometry(pyramidGeometry);
 
     // Declare and initialize a transform node.
@@ -462,12 +469,14 @@ void test_no_display_multiple_cameras(){
     osg::Camera *camera2 = view2->getCamera();
 
 
+
     // make a drone
     osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform();
     osg::Sphere* unitSphere = new osg::Sphere( osg::Vec3(0,0,0.0), 2.0);
     osg::ShapeDrawable* unitSphereDrawable = new osg::ShapeDrawable(unitSphere);
     osg::Geode* basicShapesGeode = new osg::Geode();
     basicShapesGeode->addDrawable(unitSphereDrawable);
+    unitSphereDrawable->setColor(osg::Vec4(1.0, 0, 0, 1.0));
 
     transform->setPosition(osg::Vec3(15.0, 15.0, 15.0));
 
@@ -479,6 +488,22 @@ void test_no_display_multiple_cameras(){
     transform->setAttitude(ori);
     transform->addChild(basicShapesGeode);
     root->addChild(transform);
+
+   // create infinit plane
+
+    osg::Box* terrain = new osg::Box(osg::Vec3(0, 0, 0), 1000, 1000, 0.01);
+    osg::ShapeDrawable* terrainDraw = new osg::ShapeDrawable(terrain);
+    osg::Geode* terrainGeode = new osg::Geode();
+    terrainGeode->addDrawable(terrainDraw);
+    root->addChild(terrainGeode);
+    osg::Image* image = osgDB::readImageFile("/home/guillaume/cpp_workspace/osg_world/gras.jpg");
+    osg::Texture2D* tex2d = new osg::Texture2D( image );
+    tex2d->setWrap( osg::Texture::WRAP_S, osg::Texture::REPEAT );
+    tex2d->setWrap( osg::Texture::WRAP_T, osg::Texture::REPEAT );
+    terrainDraw->getOrCreateStateSet()->setTextureAttributeAndModes(0, tex2d, osg::StateAttribute::ON );
+
+
+
 
     //
     osg::PositionAttitudeTransform * followerOffset = new osg::PositionAttitudeTransform();
@@ -571,6 +596,7 @@ void test_no_display_multiple_cameras(){
     view_window->setCameraManipulator(Tman);
     view_window->getCamera()->setViewMatrix(tankFollowerWorldCoords->getMatrix());
     view_window->setSceneData(root);
+    view_window->setLightingMode(osg::View::LightingMode::SKY_LIGHT);
     view_window->setUpViewInWindow(0, 0, 600, 400);
     viewer.addView(view_window);
 
