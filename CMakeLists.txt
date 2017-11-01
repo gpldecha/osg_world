@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(test_open_sg)
+project(world_sim)
 
 
 set(CMAKE_CXX_FLAGS "-O2 -O3 -std=c++11 -isystem -mtune=native -fPIC -Wall -Wno-deprecated-declarations -Wno-reorder")
@@ -54,12 +54,12 @@ add_executable(world_sim ${SRC_FILES})
 target_link_libraries(world_sim ${catkin_LIBRARIES} GL GLU glut ${OSG_LIGB})
 
 
-add_executable(test_home Testhome.cpp KeyboardHandler.cpp TransformAccumulator.cpp )
-target_link_libraries(test_home boost_thread boost_system boost_regex ${catkin_LIBRARIES}  ${Boost_LIBRARIES} GL GLU glut ${OSG_LIGB} ${OpenCV_LIBS} ${MJPEG_SERVER_LIB})
+#add_executable(test_home Testhome.cpp KeyboardHandler.cpp TransformAccumulator.cpp )
+#target_link_libraries(test_home boost_thread boost_system boost_regex ${catkin_LIBRARIES}  ${Boost_LIBRARIES} GL GLU glut ${OSG_LIGB} ${OpenCV_LIBS} ${MJPEG_SERVER_LIB})
 
 
-add_executable(test_reference plot_reference_frame.cpp)
-target_link_libraries(test_reference boost_thread boost_system boost_regex ${catkin_LIBRARIES}  ${Boost_LIBRARIES} GL GLU glut ${OSG_LIGB} ${OpenCV_LIBS} ${MJPEG_SERVER_LIB})
+#add_executable(test_reference plot_reference_frame.cpp)
+#target_link_libraries(test_reference boost_thread boost_system boost_regex ${catkin_LIBRARIES}  ${Boost_LIBRARIES} GL GLU glut ${OSG_LIGB} ${OpenCV_LIBS} ${MJPEG_SERVER_LIB})
 
 
 #add_executable(test_matrix TestMatrix.cpp KeyboardHandler.cpp)

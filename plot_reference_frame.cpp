@@ -18,7 +18,6 @@
 #include <thread>
 #include <osg/ShapeDrawable>
 
-#include <mjpeg_server/mjpeg_server.hpp>
 #include <osgViewer/CompositeViewer>
 #include <boost/lexical_cast.hpp>
 

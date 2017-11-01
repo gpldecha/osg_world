@@ -519,6 +519,9 @@ void test_no_display_multiple_cameras(){
     transformAccumulator* tankFollowerWorldCoords = new transformAccumulator();
     tankFollowerWorldCoords->attachToGroup(followerOffset);
 
+    osg::PositionAttitudeTransform* trans_cam1 = new osg::PositionAttitudeTransform();
+
+
     {   // Camera one
         int width = 600;
         int height = 400;
@@ -545,10 +548,13 @@ void test_no_display_multiple_cameras(){
             camera1->getProjectionMatrix() *= osg::Matrix::scale(1.0/aspectRatioChange,1.0,1.0);
         }
         camera1->setViewMatrixAsLookAt(osg::Vec3d(1, 0, 0), osg::Vec3d(0, 0, 0), osg::Vec3d(0, 0, 0) );
-
         osg::ref_ptr<VideoRecord> snapImageDrawCallback = new VideoRecord(9800);
         camera1->setPostDrawCallback(snapImageDrawCallback.get());
         view1->setCamera(camera1);
+
+        trans_cam1->addChild(camera1);
+        //root->addChild(trans_cam1);
+
         view1->setSceneData( root );
         viewer.addView(view1);
     }
@@ -591,6 +597,8 @@ void test_no_display_multiple_cameras(){
         viewer.addView(view2);
     }
 
+
+
     osgViewer::View* view_window = new osgViewer::View;
     osgGA::TrackballManipulator *Tman = new osgGA::TrackballManipulator();
     view_window->setCameraManipulator(Tman);
@@ -599,6 +607,7 @@ void test_no_display_multiple_cameras(){
     view_window->setLightingMode(osg::View::LightingMode::SKY_LIGHT);
     view_window->setUpViewInWindow(0, 0, 600, 400);
     viewer.addView(view_window);
+
 
 
     viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
